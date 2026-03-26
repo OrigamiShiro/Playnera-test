@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2893abefae99fc54580c5dc806cc0b67, type: 3}
+  m_Name: blush_09
+  m_EditorClassIdentifier: Assembly-CSharp::MakeupMechanic.Data.CosmeticItemSO
+  type: 1
+  itemSprite: {fileID: 21300000, guid: 3f1715aa224d4224ab006a36f96524e5, type: 3}
+  resultSprite: {fileID: 21300000, guid: fa2936066e1a34741a1bb8ef5a8fb77e, type: 3}
