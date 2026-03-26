@@ -17,9 +17,6 @@ namespace MakeupMechanic.Core
         [SerializeField] private Button _spongeButton;
         [SerializeField] private Button _creamButton;
 
-        [Header("Tools")]
-        [SerializeField] private AnimatedTool _sponge;
-
         [Header("Config")]
         [SerializeField] private string _levelConfigPath = "LevelConfig";
 
@@ -46,16 +43,21 @@ namespace MakeupMechanic.Core
         {
             var rightPage = _bookView.RightPage;
 
-            foreach (var bc in GetBrushConfigs())
+            foreach (CosmeticType t in System.Enum.GetValues(typeof(CosmeticType)))
             {
-                bc.brush.gameObject.SetActive(false);
+                var brush = _applyHandler.GetBrushForType(t);
+                if (brush != null)
+                {
+                    brush.gameObject.SetActive(false);
+                }
             }
 
-            if (_applyHandler.TryGetBrushConfig(type, out var config))
+            var activeBrush = _applyHandler.GetBrushForType(type);
+            if (activeBrush != null)
             {
-                config.brush.SetParent(rightPage, false);
-                config.brush.anchoredPosition = Vector2.zero;
-                config.brush.gameObject.SetActive(true);
+                activeBrush.SetParent(rightPage, false);
+                activeBrush.anchoredPosition = Vector2.zero;
+                activeBrush.gameObject.SetActive(true);
             }
         }
 
@@ -63,65 +65,29 @@ namespace MakeupMechanic.Core
         {
             if (_applyHandler.IsAnimating || _dragSystem.IsDragging) return;
 
-            var type = _bookView.CurrentType;
-
-            if (_applyHandler.TryGetBrushConfig(type, out var config))
-            {
-                _applyHandler.StartBrushPickup(item, config, _dragSystem);
-            }
-            else if (type == CosmeticType.Lipstick)
-            {
-                _applyHandler.StartLipstickPickup(item, _dragSystem);
-            }
+            _applyHandler.StartPickup(item, _dragSystem);
         }
 
         private void HandleApplied(ICosmetic item, RectTransform tool)
         {
-            if (_applyHandler.TryGetBrushConfig(item.Data.type, out var config))
-            {
-                _applyHandler.StartBrushApply(item, tool, config, _character, _bookView.RightPage);
-            }
-            else if (item.Data.type == CosmeticType.Lipstick)
-            {
-                _applyHandler.StartLipstickApply(item, tool, _character, _bookView.CurrentContainer);
-            }
+            _applyHandler.StartApply(item, tool, _character, _bookView.RightPage);
         }
 
         private void HandleMissed(ICosmetic item, RectTransform tool)
         {
-            if (_applyHandler.TryGetBrushConfig(item.Data.type, out var config))
-            {
-                _applyHandler.ReturnBrush(tool, _bookView.RightPage);
-            }
-            else if (item.Data.type == CosmeticType.Lipstick)
-            {
-                _applyHandler.ReturnLipstick(tool);
-            }
+            _applyHandler.ReturnTool(item, tool);
         }
 
         private void HandleSpongeClick()
         {
             if (_applyHandler.IsAnimating || _dragSystem.IsDragging) return;
-            _applyHandler.StartSponge(_sponge, _character);
+            _applyHandler.StartSponge(_character);
         }
 
         private void HandleCreamClick()
         {
             if (_applyHandler.IsAnimating) return;
             _character.RemoveAcne();
-        }
-
-        private BrushConfig[] GetBrushConfigs()
-        {
-            var configs = new System.Collections.Generic.List<BrushConfig>();
-            foreach (CosmeticType type in System.Enum.GetValues(typeof(CosmeticType)))
-            {
-                if (_applyHandler.TryGetBrushConfig(type, out var config))
-                {
-                    configs.Add(config);
-                }
-            }
-            return configs.ToArray();
         }
 
         private void OnDestroy()

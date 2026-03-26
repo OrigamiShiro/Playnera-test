@@ -1455,9 +1455,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29bbaed506ea7f54c947b4507bbc197d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MakeupMechanic.Systems.CharacterMakeupHandler
-  _eyeshadowLayer: {fileID: 2003365483}
-  _blushLayer: {fileID: 106846201}
-  _lipstickLayer: {fileID: 1618390469}
+  _layers:
+  - type: 0
+    layer: {fileID: 2003365483}
+  - type: 1
+    layer: {fileID: 106846201}
+  - type: 2
+    layer: {fileID: 1618390469}
   _acne: {fileID: 1726206764}
 --- !u!1 &746756525
 GameObject:
@@ -1888,6 +1892,7 @@ GameObject:
   - component: {fileID: 1217372432}
   - component: {fileID: 1217372435}
   - component: {fileID: 1217372436}
+  - component: {fileID: 1217372437}
   m_Layer: 0
   m_Name: EyeBrush
   m_TagString: Untagged
@@ -1987,6 +1992,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MakeupMechanic.Systems.AnimatedTool
   _animator: {fileID: 1217372435}
+--- !u!114 &1217372437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217372430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70b0479c25c0e334c89aa405fe59b8c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MakeupMechanic.Systems.BrushApplyStrategy
+  _type: 0
+  _brush: {fileID: 1217372434}
+  _animatedTool: {fileID: 1217372436}
+  _leftContainer: {fileID: 909103414}
+  _rightContainer: {fileID: 1173190802}
+  _canvas: {fileID: 1687793276}
+  _canvasRect: {fileID: 1687793277}
+  _moveDuration: 0.3
 --- !u!1 &1229400442
 GameObject:
   m_ObjectHideFlags: 0
@@ -2120,6 +2145,7 @@ GameObject:
   - component: {fileID: 1446271941}
   - component: {fileID: 1446271943}
   - component: {fileID: 1446271944}
+  - component: {fileID: 1446271945}
   m_Layer: 0
   m_Name: BlushBrush
   m_TagString: Untagged
@@ -2219,6 +2245,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MakeupMechanic.Systems.AnimatedTool
   _animator: {fileID: 1446271943}
+--- !u!114 &1446271945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446271939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70b0479c25c0e334c89aa405fe59b8c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MakeupMechanic.Systems.BrushApplyStrategy
+  _type: 1
+  _brush: {fileID: 1446271940}
+  _animatedTool: {fileID: 1446271944}
+  _leftContainer: {fileID: 67864465}
+  _rightContainer: {fileID: 1576392842}
+  _canvas: {fileID: 1687793276}
+  _canvasRect: {fileID: 1687793277}
+  _moveDuration: 0.3
 --- !u!1 &1528528020
 GameObject:
   m_ObjectHideFlags: 0
@@ -2405,6 +2451,7 @@ GameObject:
   - component: {fileID: 1561246247}
   - component: {fileID: 1561246248}
   - component: {fileID: 1561246249}
+  - component: {fileID: 1561246250}
   m_Layer: 0
   m_Name: Orchestrator
   m_TagString: Untagged
@@ -2445,7 +2492,6 @@ MonoBehaviour:
   _applyHandler: {fileID: 1561246249}
   _spongeButton: {fileID: 2730417}
   _creamButton: {fileID: 186473069}
-  _sponge: {fileID: 2730421}
   _levelConfigPath: LevelConfig
 --- !u!114 &1561246248
 MonoBehaviour:
@@ -2475,21 +2521,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49cc1e0b1eebc274a838d5c547dfa74d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MakeupMechanic.Systems.MakeupApplyHandler
-  _brushConfigs:
-  - type: 0
-    brush: {fileID: 1217372434}
-    animatedTool: {fileID: 1217372436}
-    leftContainer: {fileID: 909103414}
-    rightContainer: {fileID: 1173190802}
-  - type: 1
-    brush: {fileID: 1446271940}
-    animatedTool: {fileID: 1446271944}
-    leftContainer: {fileID: 67864465}
-    rightContainer: {fileID: 1576392842}
+  _strategies:
+  - {fileID: 1217372437}
+  - {fileID: 1446271945}
+  - {fileID: 1561246250}
+  _sponge: {fileID: 2730421}
+--- !u!114 &1561246250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1561246245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 911fd440fe6b0c04797e97020f252b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MakeupMechanic.Systems.LipstickApplyStrategy
   _lipsContainer: {fileID: 1575845066}
-  _moveDuration: 0.3
   _canvas: {fileID: 1687793276}
   _canvasRect: {fileID: 1687793277}
+  _moveDuration: 0.3
 --- !u!1 &1575845065
 GameObject:
   m_ObjectHideFlags: 0

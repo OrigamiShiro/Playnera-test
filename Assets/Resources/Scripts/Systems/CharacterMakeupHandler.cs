@@ -1,16 +1,33 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using MakeupMechanic.Data;
 
 namespace MakeupMechanic.Systems
 {
+    [Serializable]
+    public struct MakeupLayer
+    {
+        public CosmeticType type;
+        public Image layer;
+    }
+
     public class CharacterMakeupHandler : MonoBehaviour
     {
-        [SerializeField] private Image _eyeshadowLayer;
-        [SerializeField] private Image _blushLayer;
-        [SerializeField] private Image _lipstickLayer;
+        [SerializeField] private MakeupLayer[] _layers;
         [SerializeField] private GameObject _acne;
+
+        private Dictionary<CosmeticType, Image> _layerMap;
+
+        private void Awake()
+        {
+            _layerMap = new Dictionary<CosmeticType, Image>();
+            foreach (var ml in _layers)
+            {
+                _layerMap[ml.type] = ml.layer;
+            }
+        }
 
         public void ApplyCosmetic(ICosmetic item)
         {
@@ -21,9 +38,10 @@ namespace MakeupMechanic.Systems
 
         public void RemoveAllMakeup()
         {
-            _eyeshadowLayer.gameObject.SetActive(false);
-            _blushLayer.gameObject.SetActive(false);
-            _lipstickLayer.gameObject.SetActive(false);
+            foreach (var ml in _layers)
+            {
+                ml.layer.gameObject.SetActive(false);
+            }
         }
 
         public void RemoveAcne()
@@ -31,12 +49,9 @@ namespace MakeupMechanic.Systems
             _acne.SetActive(false);
         }
 
-        private Image GetLayer(CosmeticType type) => type switch
+        private Image GetLayer(CosmeticType type)
         {
-            CosmeticType.Eyeshadow => _eyeshadowLayer,
-            CosmeticType.Blush => _blushLayer,
-            CosmeticType.Lipstick => _lipstickLayer,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+            return _layerMap[type];
+        }
     }
 }
