@@ -15,11 +15,9 @@ namespace MakeupMechanic.Systems
         private ICosmetic _currentItem;
         private RectTransform _activeTool;
         private bool _isDragging;
-        private bool _isClone;
-        private Transform _originalParent;
 
-        public event Action<ICosmetic, RectTransform, bool> OnApplied;
-        public event Action OnMissed;
+        public event Action<ICosmetic, RectTransform> OnApplied;
+        public event Action<ICosmetic, RectTransform> OnMissed;
         public bool IsDragging => _isDragging;
 
         private void Awake()
@@ -27,22 +25,13 @@ namespace MakeupMechanic.Systems
             _dragPanelHandler.Init(this);
         }
 
-        public void StartDrag(ICosmetic item, RectTransform tool, Vector2 anchoredPosition, bool isClone = false)
+        public void StartDrag(ICosmetic item, RectTransform tool, Vector2 anchoredPosition)
         {
             if (_isDragging) return;
 
             _isDragging = true;
             _currentItem = item;
             _activeTool = tool;
-            _isClone = isClone;
-
-            if (!isClone)
-            {
-                _originalParent = _activeTool.parent;
-                _activeTool.pivot = new Vector2(0.5f, 1f);
-                _activeTool.SetParent(_canvas.transform, true);
-            }
-
             _activeTool.anchoredPosition = anchoredPosition;
             _activeTool.gameObject.SetActive(true);
             _dragPanel.gameObject.SetActive(true);
@@ -69,29 +58,15 @@ namespace MakeupMechanic.Systems
             {
                 var item = _currentItem;
                 var tool = _activeTool;
-                var isClone = _isClone;
                 ClearState();
-                OnApplied?.Invoke(item, tool, isClone);
+                OnApplied?.Invoke(item, tool);
             }
             else
             {
-                ResetTool();
+                var item = _currentItem;
+                var tool = _activeTool;
                 ClearState();
-                OnMissed?.Invoke();
-            }
-        }
-
-        private void ResetTool()
-        {
-            if (_isClone)
-            {
-                Destroy(_activeTool.gameObject);
-            }
-            else
-            {
-                _activeTool.pivot = new Vector2(0.5f, 0.5f);
-                _activeTool.SetParent(_originalParent, false);
-                _activeTool.anchoredPosition = Vector2.zero;
+                OnMissed?.Invoke(item, tool);
             }
         }
 
@@ -100,9 +75,7 @@ namespace MakeupMechanic.Systems
             _dragPanel.gameObject.SetActive(false);
             _currentItem = null;
             _activeTool = null;
-            _originalParent = null;
             _isDragging = false;
-            _isClone = false;
         }
 
         private bool IsInFaceZone(Vector2 screenPos)

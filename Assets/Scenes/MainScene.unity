@@ -1510,9 +1510,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MakeupMechanic.UI.CosmeticBookView
   _rightPage: {fileID: 1649338776}
-  _eyeshadowTab: {fileID: 1170721747}
-  _blushTab: {fileID: 521817037}
-  _lipstickTab: {fileID: 114891812}
+  _tabs:
+  - type: 0
+    toggle: {fileID: 1170721747}
+  - type: 1
+    toggle: {fileID: 521817037}
+  - type: 2
+    toggle: {fileID: 114891812}
   _pages:
   - type: 0
     container: {fileID: 1443004432}
@@ -2400,6 +2404,7 @@ GameObject:
   - component: {fileID: 1561246246}
   - component: {fileID: 1561246247}
   - component: {fileID: 1561246248}
+  - component: {fileID: 1561246249}
   m_Layer: 0
   m_Name: Orchestrator
   m_TagString: Untagged
@@ -2437,18 +2442,10 @@ MonoBehaviour:
   _character: {fileID: 715733752}
   _dragSystem: {fileID: 1561246248}
   _bookView: {fileID: 746756529}
+  _applyHandler: {fileID: 1561246249}
   _spongeButton: {fileID: 2730417}
   _creamButton: {fileID: 186473069}
-  _canvas: {fileID: 1687793276}
-  _canvasRect: {fileID: 1687793277}
-  _eyeBrush: {fileID: 1217372434}
-  _blushBrush: {fileID: 1446271940}
   _sponge: {fileID: 2730421}
-  _eyeLeftContainer: {fileID: 909103414}
-  _eyeRightContainer: {fileID: 1173190802}
-  _blushLeftContainer: {fileID: 67864465}
-  _blushRightContainer: {fileID: 1576392842}
-  _lipsContainer: {fileID: 1575845066}
   _levelConfigPath: LevelConfig
 --- !u!114 &1561246248
 MonoBehaviour:
@@ -2466,6 +2463,33 @@ MonoBehaviour:
   _faceZone: {fileID: 2118327475}
   _canvas: {fileID: 1687793276}
   _dragPanelHandler: {fileID: 2021777580}
+--- !u!114 &1561246249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1561246245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49cc1e0b1eebc274a838d5c547dfa74d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MakeupMechanic.Systems.MakeupApplyHandler
+  _brushConfigs:
+  - type: 0
+    brush: {fileID: 1217372434}
+    animatedTool: {fileID: 1217372436}
+    leftContainer: {fileID: 909103414}
+    rightContainer: {fileID: 1173190802}
+  - type: 1
+    brush: {fileID: 1446271940}
+    animatedTool: {fileID: 1446271944}
+    leftContainer: {fileID: 67864465}
+    rightContainer: {fileID: 1576392842}
+  _lipsContainer: {fileID: 1575845066}
+  _moveDuration: 0.3
+  _canvas: {fileID: 1687793276}
+  _canvasRect: {fileID: 1687793277}
 --- !u!1 &1575845065
 GameObject:
   m_ObjectHideFlags: 0
